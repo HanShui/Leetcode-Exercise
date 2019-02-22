@@ -1,7 +1,7 @@
 int* twoSum(int* nums, int numsSize, int target) {
   int* results = (int*) malloc (sizeof(int) * 2);
-  results[0] = 0;
-  results[1] = 1;
+  results[0] = -1;
+  results[1] = -1;
   if(numsSize <= 1) return results;
   int* dists = (int*) malloc (sizeof(int) * numsSize);
   for(int i = 0; i < numsSize; i++)

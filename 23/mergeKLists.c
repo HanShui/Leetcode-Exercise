@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct ListNode {
+ int val;
+ struct ListNode *next;
+};
+
+
+struct ListNode* mergeKLists(struct ListNode** lists, int listsSize)
+{
+  //recursive
+  //split according to listsSize
+  if(listsSize == 0)
+    return NULL;
+  else if(listsSize == 1)
+    return lists[0];
+  else if(listsSize == 2)
+    {
+      struct ListNode* p1 = lists[0];
+      struct ListNode* p2 = lists[1];
+
+      struct ListNode* p;
+      /* virtual head */
+      struct ListNode Lhead;
+      p = & Lhead;
+      Lhead.val = 0;
+      Lhead.next = NULL;
+
+      while(p1 && p2)
+        {
+          if(p1->val <= p2->val)
+            {
+              p->next = p1;
+              p1 = p1->next;
+              p = p->next;
+            }
+          else
+            {
+              p->next = p2;
+              p2 = p2->next;
+              p = p->next;
+            }
+        }
+      if(p1)
+        {
+          p->next = p1;
+        }
+      else
+        {
+          p->next = p2;
+        }
+      return  Lhead.next;
+    }
+  /* listSizes > 2, split */
+  else
+    {
+      struct ListNode* m1 = mergeKLists(lists,listsSize/2);
+      struct ListNode* m2 = mergeKLists(&lists[listsSize/2],listsSize-listsSize/2);
+      struct ListNode* nlists[2];
+      nlists[0] = m1;
+      nlists[1] = m2;
+      return mergeKLists(nlists,2);
+    }
+}
+
+int main()
+{
+  struct ListNode Node[8];
+  Node[0].val = 1;
+  Node[0].next = &Node[1];
+  Node[1].val = 4;
+  Node[1].next = &Node[2];
+  Node[2].val = 5;
+  Node[2].next = NULL;
+
+  Node[3].val = 1;
+  Node[3].next = &Node[4];
+  Node[4].val = 3;
+  Node[4].next = &Node[5];
+  Node[5].val = 4;
+  Node[5].next = NULL;
+
+  Node[6].val = 2;
+  Node[6].next = &Node[7];
+  Node[7].val = 6;
+  Node[7].next = NULL;
+
+  struct ListNode ** lists = (struct ListNode**) malloc (sizeof(struct ListNode*)*3);
+  lists[0] = &Node[0];
+  lists[1] = &Node[3];
+  lists[2] = &Node[6];
+
+  int listsSize = 3;
+  struct ListNode* mergedHead = mergeKLists(lists, listsSize);
+
+  struct ListNode* p = mergedHead;
+
+  for(p=mergedHead;p!=NULL;p=p->next)
+    {
+      printf("%d->",p->val);
+    }
+  printf("\n");
+}

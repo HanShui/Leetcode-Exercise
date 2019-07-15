@@ -33,7 +33,7 @@ int removeDuplicates(int* nums, int numsSize){
       if(j==numsSize)
         return len;
     }
-   return len;
+  return len;
 }
 
 int main()
